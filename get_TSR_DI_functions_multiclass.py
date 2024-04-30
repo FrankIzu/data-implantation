@@ -20,10 +20,7 @@ import scipy.spatial.distance as sdist
 from scipy.spatial import ConvexHull, Delaunay
 from sklearn.preprocessing import StandardScaler
 from get_TSR_data_functions import TSR_data_functions
-
                       
-#https://stackoverflow.com/questions/29311682/finding-if-point-is-in-3d-poly-in-python
-
 class TSR_DI_functions:       
     def implanFront(self, all_cluster):
       

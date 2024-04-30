@@ -18,8 +18,6 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 import scipy.spatial.distance as sdist
 from scipy.spatial import ConvexHull, Delaunay
                       
-#https://stackoverflow.com/questions/29311682/finding-if-point-is-in-3d-poly-in-python
-
 class TSR_DI_functions:       
     def implanFront(self, ds1, ds2, c, name, class_num, need, no_of_clusters, feature_size, centroids, class_size):
         
