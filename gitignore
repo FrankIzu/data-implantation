@@ -5,7 +5,6 @@
 .h5
 ipynb_checkpoints/
 __pycache__
-old_datasets
-datasets
-.venv
+old_datasets/
+datasets/
 
