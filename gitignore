@@ -4,7 +4,7 @@
 .pyc
 .h5
 ipynb_checkpoints/
-__pycache__
+__pycache__/
 old_datasets/
 datasets/
 
