@@ -18,6 +18,7 @@
 > The dataset must be saved in .csv format to avoid compactibility issues.
 > The data implanted file will be stored in NoTarget folder. NoTarget means you are not targeting any feature during the DI process
 > More details will be added here later in subsequent version where I will explain the targeting of a feature and other sections of the code that I have commented out
+> For now all datasets are be preprocessed. This will be made optional in the later releases.
 
 
 > [!NOTE]
