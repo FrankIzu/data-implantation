@@ -167,7 +167,7 @@ class DataImplantation_Frontier:
         else:       
             pd.DataFrame(merged_dataset).to_csv(parent_dir + self.colname + '_' + "Front_implanted.csv", index=None)
                         
-        return target, unique_names
+        return merged_dataset, target, unique_names
     
 # TEST CASES
 
