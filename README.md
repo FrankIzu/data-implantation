@@ -2,13 +2,13 @@
 
 
 ### Running the algorithm
+Program execution begins by calling the below two functions from the DI_Frontier_TSR_multiclass.py file. The functions are already part of the file.
 
-#### process = DI_Frontier_TSR('NoTarget', -1, 'FLAG', False) 
-- provide name of your label column; 
-- Do you want the algorithm to do feature selection and choose the best features upon which to create the synthetic samples? Provide the number of features you want selected. -i for no feature selection. Feature selection needs more than 2 features to proceed.
-- Do you want to separate your testset?
+#### process = DI_Frontier_TSR('NoTarget', -1, 'Label', False) 
+- Do you want the algorithm to do feature selection and choose the best features upon which to create the synthetic samples? If No, just leave the parameter as 'NoTarget'.
+- Provide the number of features you want selected. Feature selection needs more than 2 features to proceed. Leave as -1 if you don't want to do feature selection.
 - Provide name of your label column. Your label column name will be with **label**. This will be fixed in later versions
-- Do you want to separate your testset? If yes DI will separate 40% of your dataset as testset and use the remaining 60% for creating synthetic samples. 40% is hardocded for now, will be fixed in late revisions
+- Do you want to separate your testset? If True, DI will separate 40% of your dataset as testset and use the remaining 60% for creating synthetic samples. 40% is hardocded for now, this will be made more flexible in later revisions.
 
 #### process.runDIprocess(2, 100) 
 - Class size. 2 - is for binary classification
