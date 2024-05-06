@@ -13,9 +13,10 @@ import csv
 import warnings
 warnings.filterwarnings("ignore")
 
-sys.path.append('/home/francis/Documents/ML/NIH ML') # append AutoClean folder to current path
-from AutoClean.AutoClean import AutoClean
+#sys.path.append('AutoClean') # append AutoClean folder to current path
+from .AutoClean.AutoClean import AutoClean
 
+import pathlib
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -44,7 +45,7 @@ from collections import Counter
 from sklearn.datasets import make_classification
 from imblearn.over_sampling import SMOTE
 
-from get_TSR_DI_functions import TSR_DI_functions
+from .get_TSR_DI_functions import TSR_DI_functions
 
 class TSR_data_functions:
 
@@ -293,8 +294,8 @@ class TSR_data_functions:
         indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
         return df[indices_to_keep].astype(np.float64)
         
-    def get_TSR_by_Class_generic(self, class_size, colname, nfeatures, labelname, testset): 
-        df = pd.read_csv("datasets/cleaned.csv") #.drop(['HOSP_MRS90_DATE'], axis=1)
+    def get_TSR_by_Class_generic(self, dataset, class_size, colname, nfeatures, labelname, testset): 
+        df = dataset
        
         target_label = labelname # HOSP_MRSDIS HOSP_MRS90
         # df = df.loc[(df['STRK_FINALDIAG'] == 1) & (df[target_label] != 91) & (df[target_label] != 99) & df[target_label].notnull()]
@@ -424,7 +425,7 @@ class TSR_data_functions:
                         
             # save the features used in the experiment = nfeatures
             path = working_dir + colname 
-            os.mkdir(path) 
+            pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
             pd.DataFrame(cols).to_csv(path + '/'  + 'features' + ".csv", header=['feature'], index=None)   
                          
             # returns a dictionary  
@@ -540,7 +541,8 @@ class TSR_data_functions:
                
                 # save the features used in the experiment = nfeatures
                 path = working_dir + colname 
-                os.mkdir(path) 
+                
+                pathlib.Path(path).mkdir(parents=True, exist_ok=True) 
                 pd.DataFrame(cols).to_csv(path + '/'  + 'features' + ".csv", header=['feature'], index=None)   
                
                 target = cols.index(colname)

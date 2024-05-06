@@ -23,25 +23,20 @@ import seaborn as sns #visualisation library
 from sklearn.decomposition import PCA
 import warnings
 
-from get_TSR_data_functions import TSR_data_functions
-from get_TSR_DI_functions_multiclass import TSR_DI_functions
-#from get_TSR_DALAS_functions_multiclass import TSR_DI_functions
-
-# https://www.youtube.com/watch?v=gk7ntPrxy-k
-# https://towardsdatascience.com/dimensionality-reduction-for-data-visualization-pca-vs-tsne-vs-umap-be4aa7b1cb29
+from .get_TSR_data_functions import TSR_data_functions
+from .get_TSR_DI_functions_multiclass import TSR_DI_functions
 
 warnings.filterwarnings("ignore")
 print('*** modification tracking - v18 ***')
 
-class DI_Frontier_TSR:
+class DataImplantation_Frontier:
         
-    def __init__(self, col, nF, lab, test=True):        
+    def __init__(self, col = "NoTarget", nF=-1, createtest=False):        
         self.colname = col
         self.nfeatures = nF
-        self.labelname = lab
-        self.testset = test
+        self.createtest = createtest
     
-    def runDIprocess(self, class_size, di_ratio=100, doDI=True):
+    def runDIprocess(self, dataset, labelcolumnname = "label", class_size = 2, di_ratio=100, doDI=True):
         percentage_of_outlier = di_ratio # value is in percentage. set to 0% to bypass DI
         #self.colname = 'GENDER_TX'
         
@@ -51,7 +46,7 @@ class DI_Frontier_TSR:
         func = TSR_data_functions()
         di = TSR_DI_functions()
         
-        diction, target, unique_names, cols = func.get_TSR_by_Class_generic(class_size, self.colname, self.nfeatures, self.labelname, self.testset)
+        diction, target, unique_names, cols = func.get_TSR_by_Class_generic(dataset, class_size, self.colname, self.nfeatures, labelcolumnname, self.createtest)
        
         category_list = []
         #d=  func.get_TSR_by_Class('CA_ID')
@@ -178,8 +173,9 @@ class DI_Frontier_TSR:
 
 # passing -1 as feature number means feature selection will not be used 
 # passing any numbers less than 3 will hurt the program. Feature selection needs more than 2 features to proceed.
-process = DI_Frontier_TSR('NoTarget', -1, 'FLAG', False) # provide name of your label column; Do you want to separate your testset?
-process.runDIprocess(2, 105) # class size; if we should DataImplant or not. % of implant to equalize the dataset
+#dataset = pd.read_csv("datasets/cleaned.csv") #.drop(['HOSP_MRS90_DATE'], axis=1)
+#process = DataImplantation_Frontier() # provide name of your label column; Do you want to separate your testset?
+#process.runDIprocess(dataset) # class size; if we should DataImplant or not. % of implant to equalize the dataset
 
 #process = DI_Frontier_TSR('HIST_CEREB_ISCH', -1) #GCSE_NM
 #target, unique_names = process.runDIprocess(7, True)
