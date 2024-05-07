@@ -264,8 +264,8 @@ class TSR_data_functions:
         df = df.rename(columns = {df.columns[len(df.columns)-1]:'label'}) 
         return df
     
-    def get_no_of_clusters_dbscan(self, data):
-        clusterer = hdbscan.HDBSCAN(max_cluster_size=20)
+    def get_no_of_clusters_dbscan(self, data): # not used
+        clusterer = hdbscan.HDBSCAN(max_cluster_size=5)
         clusterer.fit(data)
         print('Number of clusters found = {}'.format(clusterer.labels_.max() + 1))
         return clusterer.labels_.max() + 1 # hdbscan count starts from 0
