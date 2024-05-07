@@ -1,18 +1,28 @@
 ## data-implantation (DI) by Francis Onodueze
 
 
-### Running the algorithm
-Program execution begins by calling the below two functions from the DI_Frontier_TSR_multiclass.py file. The functions are already part of the file.
+### Running the algorithm (sample code)
+import pandas as pd
+from data_implantation_frontier.DI_Frontier_TSR_multiclass import DataImplantation_Frontier
 
-#### process = DI_Frontier_TSR('NoTarget', -1, 'Label', False) 
-- Do you want the algorithm to do feature selection and choose the best features upon which to create the synthetic samples? If No, just leave the parameter as 'NoTarget'.
-- Provide the number of features you want selected. Feature selection needs more than 2 features to proceed. Leave as -1 if you don't want to do feature selection.
-- Provide name of your label column. Your label column name will be with **label**. This will be fixed in later versions
-- Do you want to separate your testset? If True, DI will separate 40% of your dataset as testset and use the remaining 60% for creating synthetic samples. 40% is hardocded for now, this will be made more flexible in later revisions.
+dataset = pd.read_csv("datasets/cleaned.csv")
+process = DataImplantation_Frontier() # provide name of your label column; Do you want to separate your testset?
+df, _, _ =  process.runDIprocess(dataset, 'Label', di_ratio=100) 
 
-#### process.runDIprocess(2, 100) 
-- Class size. 2 - is for binary classification
+#### process = DI_Frontier_TSR(col = "NoTarget", nF=-1, createtest=False) 
+-  If you are creating synthetic sample based on another column other than the label column, provide the name of the column. This is used mainly for multi-label classification. Otherwise, just leave the column as 'NoTarget'.
+- Do you want the algorithm to do feature selection and choose the best features upon which to create the synthetic samples? Provide the number of features you want selected. Feature selection needs more than 2 features to proceed. Leave nF as -1 if you don't want to do feature selection.
+- createtest: Do you want to separate your testset? If True, DI will separate 40% of your dataset as testset and use the remaining 60% for creating synthetic samples. 40% is hardocded for now, this will be made more flexible in later revisions.
+
+#### process.runDIprocess(dataset, labelcolumnname = "label", class_size = 2, di_ratio=100, doDI=True) 
+- dataset: is a dataframe of your entire data including the label column
+- labelcolumnname: is the name of your label column. Most times its 'label'. Its usually addresses as Y, while the rest of the dataset is X 
+- Class size: 2 - is for binary classification
 - Percentage of synthetic samples to create relative to the majority sample size. 100% means you want minority and majority samples to be equal in size (for binary classification). For nulti-class classification, 100% means that all samples belonging to separate classes will be approximately the same size.
+
+#### Output
+- Your implanted dataset will be saved in datasets/NoTarget/ folder
+- if you opted to separate your testset before dataimplantation, your test set will be store in datasets/ folder
 
 > [!IMPORTANT]
 > The dataset must be saved in .csv format to avoid compactibility issues.
