@@ -265,9 +265,9 @@ class TSR_data_functions:
         return df
     
     def get_no_of_clusters_dbscan(self, data):
-        clusterer = hdbscan.HDBSCAN()
+        clusterer = hdbscan.HDBSCAN(max_cluster_size=20)
         clusterer.fit(data)
-        #print('Number of clusters = {}'.format(clusterer.labels_.max() + 1))
+        print('Number of clusters found = {}'.format(clusterer.labels_.max() + 1))
         return clusterer.labels_.max() + 1 # hdbscan count starts from 0
     
     def get_no_of_clusters_kmeans(self, data):

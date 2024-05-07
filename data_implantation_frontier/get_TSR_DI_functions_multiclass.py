@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 import math
 import time
+#import timeout_decorator
 
 from random import uniform
 import random
@@ -22,6 +23,8 @@ from sklearn.preprocessing import StandardScaler
 from .get_TSR_data_functions import TSR_data_functions
                       
 class TSR_DI_functions:       
+   
+          
     def implanFront(self, all_cluster):
       
         data = []
@@ -74,6 +77,7 @@ class TSR_DI_functions:
             # loop until the required number of points that meet the criteria is reached
             #print(f'target quantity = {qty}')
                        
+            time_out = time.process_time() + 5   
             while np.shape(accepted_points)[0] < qty:
                 #ct+=1
                 #print(f'miselenouse counter count = {ct}')
@@ -132,8 +136,7 @@ class TSR_DI_functions:
                 else:
                     # the first cluster that has nothing to compare with
                     new_poly = A                   
-                               
-                
+                                          
                 # convert back to dataframe
                 ndf = pd.DataFrame(new_poly, columns = [f's{x}' for x in range(new_poly.shape[1])])                                        
                 mu = np.mean(cluster[1].values.astype(int), axis=0)
@@ -184,7 +187,7 @@ class TSR_DI_functions:
             #pd.DataFrame(data).to_csv("datasets/research/BCW_"+ name +"_implanted.csv", index=None)
         
         return  data
-        
+    
     def validate_cluster_by_centroid(self, all_cluster_data, class_num, feature_size, current):
         # the points here have been validted against all clusters and found to be legitimately wihtin their cluster
       

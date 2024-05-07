@@ -57,7 +57,7 @@ class DataImplantation_Frontier:
             
             print(); # empty line
             if doDI==True:
-                print(f'Implantation for sub {category} started ......')
+                print(f'Implantation for {category} started ......')
             else:
                  print(f'Sub {category} contains categorocal data. No DI will be performed.')
         
@@ -70,10 +70,10 @@ class DataImplantation_Frontier:
                     max_size = data_dictn[i].shape[0] 
                     
                 # determine the best number of clusters for the algorithm
-                kmeans_k.append(func.get_no_of_clusters_dbscan(data_dictn[i]))
+                #kmeans_k.append(func.get_no_of_clusters_dbscan(data_dictn[i]))
+                kmeans_k.append(func.get_no_of_clusters_kmeans(data_dictn[i]))
             no_of_clusters = mode(kmeans_k)
             #print(f'no of clusters = {no_of_clusters}')
-            #continue
                             
             feature_size = len(data_dictn[0].columns) - 1 # exclude the label
             

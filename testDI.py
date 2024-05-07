@@ -3,6 +3,7 @@ from data_implantation_frontier.DI_Frontier_TSR_multiclass import DataImplantati
 
 dataset = pd.read_csv("datasets/cleaned.csv")
 process = DataImplantation_Frontier() # provide name of your label column; Do you want to separate your testset?
-process.runDIprocess(dataset, 'FLAG') 
+df, _, _ =  process.runDIprocess(dataset, 'FLAG', di_ratio=50) 
 
+df.head()
 
