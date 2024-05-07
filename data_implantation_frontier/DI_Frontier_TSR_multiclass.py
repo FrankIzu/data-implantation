@@ -3,6 +3,8 @@
 # Importing the libraries
 
 import os 
+import sys
+import time
 
 import numpy as np
 from numpy import where
@@ -26,8 +28,9 @@ import warnings
 from .get_TSR_data_functions import TSR_data_functions
 from .get_TSR_DI_functions_multiclass import TSR_DI_functions
 
+from loguru import logger
 warnings.filterwarnings("ignore")
-print('*** modification tracking - v18 ***')
+
 
 class DataImplantation_Frontier:
         
@@ -55,11 +58,11 @@ class DataImplantation_Frontier:
             category = key
             data_dictn = value
             
-            print(); # empty line
+            print() # empty line
             if doDI==True:
-                print(f'Implantation for {category} started ......')
+                logger.info(f'Implantation for {category} started ......')
             else:
-                 print(f'Sub {category} contains categorocal data. No DI will be performed.')
+                 logger.error(f'Sub {category} contains categorocal data. No DI will be performed.')
         
             # get the biggest dataframe
             #max_size = max([data_dictn[0].shape[0], data_dictn[1].shape[0], data_dictn[2].shape[0], data_dictn[3].shape[0], data_dictn[4].shape[0], data_dictn[5].shape[0]])
@@ -73,13 +76,14 @@ class DataImplantation_Frontier:
                 #kmeans_k.append(func.get_no_of_clusters_dbscan(data_dictn[i]))
                 kmeans_k.append(func.get_no_of_clusters_kmeans(data_dictn[i]))
             no_of_clusters = mode(kmeans_k)
-            #print(f'no of clusters = {no_of_clusters}')
+            #logger.info(f'no of clusters = {no_of_clusters}')
                             
             feature_size = len(data_dictn[0].columns) - 1 # exclude the label
             
             appended_data = [] #np.array([[]])
                  
-                                
+
+            start_time = time.time()                 
             for class_num in range(0, len(data_dictn)):
                 all_cluster = []     
                 mdata = pd.DataFrame()
@@ -95,15 +99,15 @@ class DataImplantation_Frontier:
                 need = goal-len(data0)
                 #need_ratio = need/len(data0)
                                             
-                #print(f'... reducing the size of points ***** this is temporary {need-1000}')
+                #logger.info(f'... reducing the size of points ***** this is temporary {need-1000}')
                 #need = need/2
                 
                 if need > 2 and doDI==True:    
                     print()
-                    print(f'Now implanting ... label {class_num}')
+                    logger.info(f'Now implanting ... label {class_num}')
                     
-                    print(f'Largest = {max_size} Goal = {goal}')
-                    print(f'what we have = {len(data0)} what we need to create ~ {goal-len(data0)}')
+                    logger.info(f'Largest = {max_size} Goal = {goal}')
+                    logger.info(f'what we have = {len(data0)} what we need to create ~ {goal-len(data0)}')
                         
                     dfX = data0.copy()
                     
@@ -111,7 +115,7 @@ class DataImplantation_Frontier:
                     points = dfX.drop('label', axis=1)   
                                        
                     # or points = df[['Type1', 'Type2', 'Type3']]
-                    #print(f'maximum = {points.max()}')
+                    #logger.info(f'maximum = {points.max()}')
                     kmeans = cluster.KMeans(n_clusters=no_of_clusters, random_state=0).fit(points)
                     dfX['Cluster'] = kmeans.labels_
                     #dfX = pd.concat([dfX, Y], axis=1)
@@ -122,7 +126,7 @@ class DataImplantation_Frontier:
                         sdist.cdist(points, centroids), 
                         columns=['dist_{}'.format(i) for i in range(len(centroids))],
                         index=dfX.index)
-                    # print(dists);
+                    # logger.info(dists);
                     dfX = pd.concat([dfX, dists], axis=1)
                     
                     dfXX = dfX.copy()
@@ -147,15 +151,16 @@ class DataImplantation_Frontier:
                 else:
                     mdata = pd.DataFrame(data = data0.to_numpy(), columns = cols)                    
                     
-                #print(f'Before implant {data0.shape}')
-                print(f'After implant {mdata.shape} *** Goal was {(goal, mdata.shape[1])}')
+                #logger.info(f'Before implant {data0.shape}')
+                logger.info(f'After implant {mdata.shape} *** Goal was {(goal, mdata.shape[1])}')
                 appended_data.append(mdata) 
                 
+            logger.info("Data Implantation execution time --- %s seconds ---" % (time.time() - start_time))   
             merged_dataset = pd.concat(appended_data)
             #np.random.shuffle(merged_dataset)
             print()
                                                
-            print(f'Total samples merged = {merged_dataset.shape}')
+            logger.success(f'Total samples merged = {merged_dataset.shape}')
             
             #np.unique(y_train, return_counts=True)     
             if self.colname != 'NoTarget':             

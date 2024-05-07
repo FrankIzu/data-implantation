@@ -47,6 +47,9 @@ from imblearn.over_sampling import SMOTE
 
 from .get_TSR_DI_functions import TSR_DI_functions
 
+from loguru import logger
+      
+
 class TSR_data_functions:
 
     def get_TSR_imp(name):
@@ -130,7 +133,7 @@ class TSR_data_functions:
                 
             X_test, X_val, y_test, y_val = train_test_split(X_test_val, y_test_val, test_size = 0.5, random_state = 1)
               
-            #print(np.unique(Y))
+            #logger.info(np.unique(Y))
         
         return X_train, X_test, X_val, y_train, y_test, y_val, len(np.unique(Y))
         
@@ -202,7 +205,7 @@ class TSR_data_functions:
         df_tr = pd.DataFrame(df_tr, columns = [f's{x+1}' for x in range(df_tr.shape[1])])  
         df_tr = df_tr.rename(columns = {df_tr.columns[len(df_tr.columns)-1]:'label'}) 
        
-        #print(df_tr.label.unique())
+        #logger.info(df_tr.label.unique())
         data0 = df_tr[df_tr['label'] == 0].reset_index(drop=True)
         data1 = df_tr[df_tr['label'] == 1].reset_index(drop=True)
         data2 = df_tr[df_tr['label'] == 2].reset_index(drop=True)
@@ -210,7 +213,7 @@ class TSR_data_functions:
         data4 = df_tr[df_tr['label'] == 4].reset_index(drop=True)
         data5 = df_tr[df_tr['label'] == 5].reset_index(drop=True)
         
-        #print(df.label.unique())
+        #logger.info(df.label.unique())
                        
         return [data0, data1, data2, data3, data4, data5], len(np.unique(df_tr.iloc[:,-1].values))   
 
@@ -267,7 +270,7 @@ class TSR_data_functions:
     def get_no_of_clusters_dbscan(self, data): # not used
         clusterer = hdbscan.HDBSCAN(max_cluster_size=5)
         clusterer.fit(data)
-        print('Number of clusters found = {}'.format(clusterer.labels_.max() + 1))
+        logger.info('Number of clusters found = {}'.format(clusterer.labels_.max() + 1))
         return clusterer.labels_.max() + 1 # hdbscan count starts from 0
     
     def get_no_of_clusters_kmeans(self, data):
@@ -284,7 +287,7 @@ class TSR_data_functions:
             if score > max_score:
                 max_score = score
                 max_k = k
-            #print('Silhouette Score for k = {}: {:<.3f}'.format(k, score))
+            #logger.info('Silhouette Score for k = {}: {:<.3f}'.format(k, score))
         return max_k
       
     
@@ -317,26 +320,26 @@ class TSR_data_functions:
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
         
-        #print(df.columns)
+        #logger.info(df.columns)
         dfX = df.iloc[: , :-1] 
         dfy = df.iloc[: , -1:]
         p = self.preprocess(dfX)
-        #print(f'after {d.columns}')
+        #logger.info(f'after {d.columns}')
         df = pd.concat([p.reset_index(drop=True), dfy.reset_index(drop=True)], axis=1)  
        
         df = df.select_dtypes(exclude=["object"]).astype(float)
                        
         #To get ride of all Unnamed columns, you can also use regex
         df.drop(df.filter(regex="Unname"),axis=1, inplace=True)
-        #print(df.dtypes)
+        #logger.info(df.dtypes)
         df.to_csv('datasets/mydataset_clean.csv', index=False)  
                     
-        #print(np.isfinite(df.all())) #and gets True
+        #logger.info(np.isfinite(df.all())) #and gets True
                 
         df = df.rename(columns = {target_label:'label'}) 
         #df = df.drop(pd.read_csv("datasets/features_to_drop.csv")['Columns'].tolist() , axis=1, errors='ignore')                  
                          
-        #print(df.isnull().sum())
+        #logger.info(df.isnull().sum())
         
         dfcolumns = df.columns
          
@@ -351,10 +354,11 @@ class TSR_data_functions:
         if nfeatures == -1:
             with_fs = False
             print()
-            print('NOTE: Program execution without feature selection is activated')
+            logger.warning('NOTE: Program execution without feature selection is activated')
             print()
         elif nfeatures < 3:
             sys.exit('Program execution halted. Number of features must be greater than two')
+            logger.critical('Program execution halted. Number of features must be greater than two')
                 
         if colname == 'NoTarget':              
             
@@ -367,12 +371,13 @@ class TSR_data_functions:
                 
                 # save the test set. If you rebalance entire dataset, you can't use the dataset for testing otherwise you will have bias in your result
                 data_test = pd.DataFrame(data = np.column_stack((i_X_test, i_y_test)), columns = dfcolumns)
-                data_test.to_csv('datasets/mydataset_testset.csv', index=False) 
+                logger.info(f'Testset (40%) data was saved and will not be used in Data Implanation ')
+                data_test.to_csv('datasets/test dataset.csv', index=False) 
                 
                 df_tr = pd.DataFrame(data = np.column_stack((i_X_train, i_y_train)), columns = dfcolumns)
             
             
-            #print(df_tr.label.unique())
+            #logger.info(df_tr.label.unique())
             
             data = []
             diction = {}  
@@ -384,7 +389,7 @@ class TSR_data_functions:
             else:
                 df2, cols = df_tr, dfcolumns.tolist() 
             
-            print(f'Now creating {colname} workspace .....')
+            logger.info(f'Now creating {colname} workspace .....')
             for index in range(class_size):  
                 df3 = df2[df2['label'] == index].reset_index(drop=True)
                 label = df3.iloc[:,-1] 
@@ -395,7 +400,7 @@ class TSR_data_functions:
                 # path = os.path.join(parent_dir, directory)   
                 # try:
                 #     os.makedirs(path, exist_ok = True)
-                #     print("Directory '%s' created successfully" % directory)
+                #     logger.info("Directory '%s' created successfully" % directory)
                 #     # if no of features is provided, make sure that no is greater than the number of PCA we want to do otherwise, use the number of PCA as teh no of features
                 #     if (nfeatures < no_pca):
                 #         nfeatures = no_pca                      
@@ -403,7 +408,7 @@ class TSR_data_functions:
                 #     # doPCA and discard other data not needed and then save the PCA columns
                 #     # n_components must be between 0 and min(n_samples, n_features)
                 #     n_comp = nfeatures if min(s_df.shape[0], s_df.shape[1]) > nfeatures else min(s_df.shape[0], s_df.shape[1])
-                #     #print(s_df.shape)
+                #     #logger.info(s_df.shape)
                 #     _, _, dictn, explained_variance = di.doPCA(s_df, n_comp)    
                                                 
                 #     evariance = list(explained_variance)
@@ -414,7 +419,7 @@ class TSR_data_functions:
                 #     #save sub-sub population
                 #     pd.DataFrame(df3).to_csv(path + '/' + str(index) + ".csv", index=None)
                 # except OSError as error:
-                #     print("Directory '%s' can not be created" % directory)
+                #     logger.info("Directory '%s' can not be created" % directory)
                 
                 s_data = np.column_stack((s_df, label))
                                                               
@@ -431,7 +436,7 @@ class TSR_data_functions:
             # returns a dictionary  
             diction[colname] = data
              
-            #print(df.label.unique())
+            #logger.info(df.label.unique())
             
            
         else:
@@ -439,7 +444,7 @@ class TSR_data_functions:
             target = df.columns.get_loc(colname)
             
             print()
-            #print(f'***** PLEASE NOTE THIS NUMBER {target} for {colname} *****')                       
+            #logger.info(f'***** PLEASE NOTE THIS NUMBER {target} for {colname} *****')                       
             df_tr = df
 
             if not testset:
@@ -449,7 +454,8 @@ class TSR_data_functions:
                 
                 # save the test set
                 data_test = pd.DataFrame(data = np.column_stack((i_X_test, i_y_test)), columns = dfcolumns)
-                data_test.to_csv('datasets/mydataset_testset.csv', index=False) 
+                logger.success('Testset was separated from your dataset and will not be used in Data Implantation')
+                data_test.to_csv('datasets/test_dataset.csv', index=False) 
                         
                 df_tr = pd.DataFrame(data = np.column_stack((i_X_train, i_y_train)), columns = dfcolumns)
                 
@@ -474,7 +480,7 @@ class TSR_data_functions:
                 parent_dir = working_dir + colname + '/' + identifier
                 data = []
                 print()
-                print(f'Now creating {identifier} workspace .....')
+                logger.info(f'Now creating {identifier} workspace ..... [Output artifacts will be stored here]')
                 df2_copy = df2.copy()
                 a = df2_copy.drop('label', axis=1)
                 b = df2_copy.pop('label')
@@ -506,7 +512,7 @@ class TSR_data_functions:
                         # # 'index'
                         # try:
                         #     os.makedirs(path, exist_ok = True)
-                        #     print("Directory '%s' created successfully" % directory)
+                        #     logger.info("Directory '%s' created successfully" % directory)
                         #     # if no of features is provided, make sure that no is greater than the number of PCA we want to do otherwise, use the number of PCA as teh no of features
                         #     if (nfeatures < no_pca):
                         #         nfeatures = no_pca                        
@@ -522,7 +528,7 @@ class TSR_data_functions:
                         #     #save sub-sub population
                         #     pd.DataFrame(df3).to_csv(path + '/' + str(index) + ".csv", index=None)   
                         # except OSError as error:
-                        #     print("Directory '%s' can not be created" % directory)                                                
+                        #     logger.info("Directory '%s' can not be created" % directory)                                                
                         
                         # convert back to dataframe, where the last column is called label
                         if colname not in cols: # check if colname is in the list otherwise add it

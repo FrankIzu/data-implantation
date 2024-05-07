@@ -1,0 +1,36 @@
+07-05-2024 14:10:08.68 - INFO - Started validation of input parameters...
+07-05-2024 14:10:08.68 - INFO - Completed validation of input parameters
+07-05-2024 14:10:08.68 - INFO - Started handling of missing values...
+07-05-2024 14:10:08.69 - DEBUG - 0 missing values found
+07-05-2024 14:10:08.69 - INFO - Completed handling of missing values in 0.001325 seconds
+07-05-2024 14:10:08.69 - INFO - Started conversion of DATETIME features... Granularity: s
+07-05-2024 14:10:08.69 - INFO - Completed conversion of DATETIME features in 0.0002 seconds
+07-05-2024 14:10:08.69 - INFO - Started encoding categorical features... Method: "AUTO"
+07-05-2024 14:10:08.69 - INFO - Completed encoding of categorical features in 1e-06 seconds
+07-05-2024 14:10:08.69 - INFO - Started feature type conversion...
+07-05-2024 14:10:08.69 - DEBUG - Conversion to type INT succeeded for feature "Unnamed: 0"
+07-05-2024 14:10:08.69 - DEBUG - Conversion to type FLOAT succeeded for feature "Avg min between sent tnx"
+07-05-2024 14:10:08.70 - DEBUG - Conversion to type FLOAT succeeded for feature "Avg min between received tnx"
+07-05-2024 14:10:08.70 - DEBUG - Conversion to type FLOAT succeeded for feature "Time Diff between first and last (Mins)"
+07-05-2024 14:10:08.70 - DEBUG - Conversion to type INT succeeded for feature "Sent tnx"
+07-05-2024 14:10:08.70 - DEBUG - Conversion to type INT succeeded for feature "Received Tnx"
+07-05-2024 14:10:08.70 - DEBUG - Conversion to type INT succeeded for feature "Number of Created Contracts"
+07-05-2024 14:10:08.71 - DEBUG - Conversion to type FLOAT succeeded for feature "max value received "
+07-05-2024 14:10:08.71 - DEBUG - Conversion to type FLOAT succeeded for feature "avg val received"
+07-05-2024 14:10:08.71 - DEBUG - Conversion to type FLOAT succeeded for feature "avg val sent"
+07-05-2024 14:10:08.72 - DEBUG - Conversion to type FLOAT succeeded for feature "total Ether sent"
+07-05-2024 14:10:08.72 - DEBUG - Conversion to type FLOAT succeeded for feature "total ether balance"
+07-05-2024 14:10:08.73 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total Ether received"
+07-05-2024 14:10:08.73 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total ether sent"
+07-05-2024 14:10:08.73 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total Ether sent contract"
+07-05-2024 14:10:08.73 - DEBUG - Conversion to type INT succeeded for feature " ERC20 uniq sent addr"
+07-05-2024 14:10:08.73 - DEBUG - Conversion to type INT succeeded for feature " ERC20 uniq rec token name"
+07-05-2024 14:10:08.73 - INFO - Completed feature type conversion for 17 feature(s) in 0.04733 seconds
+07-05-2024 14:10:08.73 - INFO - AutoClean completed successfully
+07-05-2024 14:10:08.80 - WARNING - NOTE: Program execution without feature selection is activated
+07-05-2024 14:10:08.80 - INFO - Now creating NoTarget workspace .....
+07-05-2024 14:10:08.80 - INFO - Implantation for NoTarget started ......
+07-05-2024 14:10:59.56 - INFO - After implant (7662, 17) *** Goal was (1532, 17)
+07-05-2024 14:10:59.56 - INFO - After implant (2179, 17) *** Goal was (1532, 17)
+07-05-2024 14:10:59.56 - INFO - Data Implantation execution time --- 0.0020220279693603516 seconds ---
+07-05-2024 14:10:59.56 - SUCCESS - Total samples merged = (9841, 17)

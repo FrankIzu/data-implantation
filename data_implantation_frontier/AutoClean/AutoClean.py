@@ -71,7 +71,7 @@ class AutoClean:
         if verbose == True:
             logger.add(sys.stderr, format='{time:DD-MM-YYYY HH:mm:ss.SS} - {level} - {message}')
         if logfile == True:    
-            logger.add('autoclean.log', mode='w', format='{time:DD-MM-YYYY HH:mm:ss.SS} - {level} - {message}')
+            logger.add('dataimplantation.log', mode='w', format='{time:DD-MM-YYYY HH:mm:ss.SS} - {level} - {message}')
         return
 
     def _validate_params(self, df, verbose, logfile):

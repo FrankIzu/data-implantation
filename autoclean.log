@@ -1,29 +1,64 @@
-07-05-2024 00:19:26.14 - INFO - Started validation of input parameters...
-07-05-2024 00:19:26.14 - INFO - Completed validation of input parameters
-07-05-2024 00:19:26.14 - INFO - Started handling of missing values...
-07-05-2024 00:19:26.14 - DEBUG - 0 missing values found
-07-05-2024 00:19:26.14 - INFO - Completed handling of missing values in 0.00123 seconds
-07-05-2024 00:19:26.14 - INFO - Started conversion of DATETIME features... Granularity: s
-07-05-2024 00:19:26.14 - INFO - Completed conversion of DATETIME features in 0.0002 seconds
-07-05-2024 00:19:26.14 - INFO - Started encoding categorical features... Method: "AUTO"
-07-05-2024 00:19:26.14 - INFO - Completed encoding of categorical features in 1e-06 seconds
-07-05-2024 00:19:26.14 - INFO - Started feature type conversion...
-07-05-2024 00:19:26.14 - DEBUG - Conversion to type INT succeeded for feature "Unnamed: 0"
-07-05-2024 00:19:26.15 - DEBUG - Conversion to type FLOAT succeeded for feature "Avg min between sent tnx"
-07-05-2024 00:19:26.15 - DEBUG - Conversion to type FLOAT succeeded for feature "Avg min between received tnx"
-07-05-2024 00:19:26.16 - DEBUG - Conversion to type FLOAT succeeded for feature "Time Diff between first and last (Mins)"
-07-05-2024 00:19:26.16 - DEBUG - Conversion to type INT succeeded for feature "Sent tnx"
-07-05-2024 00:19:26.16 - DEBUG - Conversion to type INT succeeded for feature "Received Tnx"
-07-05-2024 00:19:26.16 - DEBUG - Conversion to type INT succeeded for feature "Number of Created Contracts"
-07-05-2024 00:19:26.16 - DEBUG - Conversion to type FLOAT succeeded for feature "max value received "
-07-05-2024 00:19:26.16 - DEBUG - Conversion to type FLOAT succeeded for feature "avg val received"
-07-05-2024 00:19:26.17 - DEBUG - Conversion to type FLOAT succeeded for feature "avg val sent"
-07-05-2024 00:19:26.17 - DEBUG - Conversion to type FLOAT succeeded for feature "total Ether sent"
-07-05-2024 00:19:26.18 - DEBUG - Conversion to type FLOAT succeeded for feature "total ether balance"
-07-05-2024 00:19:26.18 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total Ether received"
-07-05-2024 00:19:26.18 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total ether sent"
-07-05-2024 00:19:26.19 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total Ether sent contract"
-07-05-2024 00:19:26.19 - DEBUG - Conversion to type INT succeeded for feature " ERC20 uniq sent addr"
-07-05-2024 00:19:26.19 - DEBUG - Conversion to type INT succeeded for feature " ERC20 uniq rec token name"
-07-05-2024 00:19:26.19 - INFO - Completed feature type conversion for 17 feature(s) in 0.044163 seconds
-07-05-2024 00:19:26.19 - INFO - AutoClean completed successfully
+07-05-2024 14:03:30.17 - INFO - Started validation of input parameters...
+07-05-2024 14:03:30.17 - INFO - Completed validation of input parameters
+07-05-2024 14:03:30.17 - INFO - Started handling of missing values...
+07-05-2024 14:03:30.17 - DEBUG - 0 missing values found
+07-05-2024 14:03:30.17 - INFO - Completed handling of missing values in 0.001395 seconds
+07-05-2024 14:03:30.17 - INFO - Started conversion of DATETIME features... Granularity: s
+07-05-2024 14:03:30.17 - INFO - Completed conversion of DATETIME features in 0.0002 seconds
+07-05-2024 14:03:30.17 - INFO - Started encoding categorical features... Method: "AUTO"
+07-05-2024 14:03:30.17 - INFO - Completed encoding of categorical features in 1e-06 seconds
+07-05-2024 14:03:30.17 - INFO - Started feature type conversion...
+07-05-2024 14:03:30.17 - DEBUG - Conversion to type INT succeeded for feature "Unnamed: 0"
+07-05-2024 14:03:30.17 - DEBUG - Conversion to type FLOAT succeeded for feature "Avg min between sent tnx"
+07-05-2024 14:03:30.18 - DEBUG - Conversion to type FLOAT succeeded for feature "Avg min between received tnx"
+07-05-2024 14:03:30.18 - DEBUG - Conversion to type FLOAT succeeded for feature "Time Diff between first and last (Mins)"
+07-05-2024 14:03:30.18 - DEBUG - Conversion to type INT succeeded for feature "Sent tnx"
+07-05-2024 14:03:30.18 - DEBUG - Conversion to type INT succeeded for feature "Received Tnx"
+07-05-2024 14:03:30.18 - DEBUG - Conversion to type INT succeeded for feature "Number of Created Contracts"
+07-05-2024 14:03:30.19 - DEBUG - Conversion to type FLOAT succeeded for feature "max value received "
+07-05-2024 14:03:30.19 - DEBUG - Conversion to type FLOAT succeeded for feature "avg val received"
+07-05-2024 14:03:30.20 - DEBUG - Conversion to type FLOAT succeeded for feature "avg val sent"
+07-05-2024 14:03:30.20 - DEBUG - Conversion to type FLOAT succeeded for feature "total Ether sent"
+07-05-2024 14:03:30.21 - DEBUG - Conversion to type FLOAT succeeded for feature "total ether balance"
+07-05-2024 14:03:30.21 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total Ether received"
+07-05-2024 14:03:30.21 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total ether sent"
+07-05-2024 14:03:30.21 - DEBUG - Conversion to type FLOAT succeeded for feature " ERC20 total Ether sent contract"
+07-05-2024 14:03:30.21 - DEBUG - Conversion to type INT succeeded for feature " ERC20 uniq sent addr"
+07-05-2024 14:03:30.22 - DEBUG - Conversion to type INT succeeded for feature " ERC20 uniq rec token name"
+07-05-2024 14:03:30.22 - INFO - Completed feature type conversion for 17 feature(s) in 0.04653 seconds
+07-05-2024 14:03:30.22 - INFO - AutoClean completed successfully
+07-05-2024 14:03:30.28 - WARNING - NOTE: Program execution without feature selection is activated
+07-05-2024 14:03:30.28 - INFO - Now creating NoTarget workspace .....
+07-05-2024 14:03:30.28 - INFO - Implantation for NoTarget started ......
+07-05-2024 14:04:21.79 - INFO - After implant (7662, 17) *** Goal was (2299, 17)
+07-05-2024 14:04:21.79 - INFO - Now implanting ... label 1
+07-05-2024 14:04:21.79 - INFO - Largest = 7662 Goal = 2299
+07-05-2024 14:04:21.79 - INFO - what we have = 2179 what we need to create ~ 120
+07-05-2024 14:04:21.91 - DEBUG - running for cluster ... 0
+07-05-2024 14:04:28.74 - DEBUG - We want = 120: Added = 1 --> Current Total = 1
+07-05-2024 14:04:35.54 - DEBUG - We want = 120: Added = 9 --> Current Total = 10
+07-05-2024 14:04:41.96 - DEBUG - We want = 120: Added = 1 --> Current Total = 11
+07-05-2024 14:04:48.34 - DEBUG - We want = 120: Added = 5 --> Current Total = 16
+07-05-2024 14:04:54.76 - DEBUG - We want = 120: Added = 9 --> Current Total = 25
+07-05-2024 14:05:01.12 - DEBUG - We want = 120: Added = 5 --> Current Total = 30
+07-05-2024 14:05:07.47 - DEBUG - We want = 120: Added = 7 --> Current Total = 37
+07-05-2024 14:05:14.12 - DEBUG - We want = 120: Added = 4 --> Current Total = 41
+07-05-2024 14:05:20.60 - DEBUG - We want = 120: Added = 3 --> Current Total = 44
+07-05-2024 14:05:27.44 - DEBUG - We want = 120: Added = 2 --> Current Total = 46
+07-05-2024 14:05:34.60 - DEBUG - We want = 120: Added = 8 --> Current Total = 54
+07-05-2024 14:05:40.95 - DEBUG - We want = 120: Added = 7 --> Current Total = 61
+07-05-2024 14:05:47.89 - DEBUG - We want = 120: Added = 4 --> Current Total = 65
+07-05-2024 14:05:54.31 - DEBUG - We want = 120: Added = 6 --> Current Total = 71
+07-05-2024 14:06:01.44 - DEBUG - We want = 120: Added = 8 --> Current Total = 79
+07-05-2024 14:06:08.51 - DEBUG - We want = 120: Added = 5 --> Current Total = 84
+07-05-2024 14:06:15.02 - DEBUG - We want = 120: Added = 7 --> Current Total = 91
+07-05-2024 14:06:21.65 - DEBUG - We want = 120: Added = 2 --> Current Total = 93
+07-05-2024 14:06:28.06 - DEBUG - We want = 120: Added = 10 --> Current Total = 103
+07-05-2024 14:06:35.17 - DEBUG - We want = 120: Added = 6 --> Current Total = 109
+07-05-2024 14:06:41.62 - DEBUG - We want = 120: Added = 6 --> Current Total = 115
+07-05-2024 14:06:48.28 - DEBUG - We want = 120: Added = 4 --> Current Total = 119
+07-05-2024 14:06:56.14 - DEBUG - We want = 120: Added = 5 --> Current Total = 124
+07-05-2024 14:06:56.15 - DEBUG - running for cluster ... 1
+07-05-2024 14:06:56.15 - INFO - After implant (2299, 17) *** Goal was (2299, 17)
+07-05-2024 14:06:56.15 - INFO - Data Implantation execution time --- 154.35964560508728 seconds ---
+07-05-2024 14:06:56.15 - SUCCESS - Total samples merged = (9961, 17)

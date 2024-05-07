@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 import math
 import time
+import sys
 #import timeout_decorator
 
 from random import uniform
@@ -21,7 +22,9 @@ import scipy.spatial.distance as sdist
 from scipy.spatial import ConvexHull, Delaunay
 from sklearn.preprocessing import StandardScaler
 from .get_TSR_data_functions import TSR_data_functions
-                      
+
+from loguru import logger
+
 class TSR_DI_functions:       
    
           
@@ -29,9 +32,9 @@ class TSR_DI_functions:
       
         data = []
         cluster_poly_dict = {}
-        nComp = 5 # number of components
-        qtyIncr = 3 # extra excess points to be created since many will be rejected
-        #print(len(all_cluster))
+        nComp = 5 # number of components. DO NOT CHANGE THIS AS IT WILL AFFECT THE PROGRAM -- except you know what it does
+        qtyIncr = 5 # extra excess points to be created since many will be rejected becasue they fall outside the cluster polygon
+        #logger.info(len(all_cluster))
         
         # this code gets the number of samples belonging to each class. Then only those whose no of samples is greater than the no of components are considered
         # this is because PCA requires that the no of samples must be greater than the no of components
@@ -42,13 +45,13 @@ class TSR_DI_functions:
             
         for index, cluster in enumerate(all_cluster):
             #print()
-            print(f'running for cluster ... {cluster[2]}')          
+            logger.debug(f'running for cluster ... {cluster[2]}')          
             y_t = cluster[0]['label'] # cluster[0] is the dataset. [label] gives us the label
             y_t = pd.DataFrame(y_t, columns=['label'])
             
             temp = None
             temp_points = np.array([])
-            #print(f'data shape is {cluster[1].shape} nComp is {nComp}')
+            #logger.info(f'data shape is {cluster[1].shape} nComp is {nComp}')
             # since the number of samples MUST be greater than the number of components otherwise you we would get an error during PCA,
             # we have to check for that. If True, then we just accept those samples without implanting them
             if cluster[1].shape[0] < nComp: 
@@ -75,13 +78,13 @@ class TSR_DI_functions:
             accepted_pca = np.array([])
             accepted_pca.shape=(0, nComp)
             # loop until the required number of points that meet the criteria is reached
-            #print(f'target quantity = {qty}')
+            #logger.info(f'target quantity = {qty}')
                        
             time_out = time.process_time() + 5   
             while np.shape(accepted_points)[0] < qty:
                 #ct+=1
-                #print(f'miselenouse counter count = {ct}')
-                # print(f'A2 = {np.shape(A2)[0]}, qty = {qty}') # this will show how points are created and stored
+                #logger.info(f'miselenouse counter count = {ct}')
+                # logger.info(f'A2 = {np.shape(A2)[0]}, qty = {qty}') # this will show how points are created and stored
                 A = new_poly = np.array([])
                 A.shape=(0, nComp) # set A to be 0 rows x 2 cols matrix
                 poly = X_train_pca         
@@ -91,8 +94,8 @@ class TSR_DI_functions:
                 max1, max2, max3, max4, max5  = max(X_train_pca[:, 0]), max(X_train_pca[:, 1]), max(X_train_pca[:, 2]), max(X_train_pca[:, 3]), max(X_train_pca[:, 4])                
            
                
-                #print(f'{min1} {min2} {min3} {min4} {min5}')                
-                #print(f'{max1} {max2} {max3} {max4} {max5}')
+                #logger.info(f'{min1} {min2} {min3} {min4} {min5}')                
+                #logger.info(f'{max1} {max2} {max3} {max4} {max5}')
                 break_out_flag = False
                 try:
                     # create qty*qtyIncr number of new points
@@ -102,37 +105,37 @@ class TSR_DI_functions:
                     break_out_flag = True
                     break
                 
-                #print (f'{points.shape} created')
+                #logger.info (f'{points.shape} created')
                 # check if the new points are inside the new polygon. To check for outside the polygon use < or False
                 A = points[list(*np.where((Delaunay(poly).find_simplex(points) >= 0)==True)), :]
                 #A = np.array(self.in_poly_hull_multi(poly, points)) # ---- this works but much slower than Delaunay             
-                #print (f'{A.shape} are inside')
-                # check if the new points are outside the all the other polygons.  
+                #logger.info (f'{A.shape} are inside')
+                # check if the new points are outside all the other polygons.  
                 if index > 0:
-                    #print(f'there are {len(cluster_poly_dict)} keys')
+                    #logger.info(f'there are {len(cluster_poly_dict)} keys')
                     for poly_value in cluster_poly_dict.values():
-                        #print(f'poly_value is {poly_value.shape}')   
-                        #print(f'A before is {A.shape}')
+                        #logger.info(f'poly_value is {poly_value.shape}')   
+                        #logger.info(f'A before is {A.shape}')
                         # checking for outside the polygon
                         try:
                             A = A[list(*np.where((Delaunay(poly_value).find_simplex(A) >= 0)==False)), :] # test for outside OTHER polygon
                         except:
-                            #print('QError was thrown but execution was continued.') # QhullError
-                            #print(f'shape of the polygon was {poly_value.shape}')
-                            #print(f'shape of the point was {A.shape}')
+                            #logger.info('QError was thrown but execution was continued.') # QhullError
+                            #logger.info(f'shape of the polygon was {poly_value.shape}')
+                            #logger.info(f'shape of the point was {A.shape}')
                             
                             # when there is an error, PASS: accept the points anyhow OR CONTINUE: neglect that polygon check OR BREAK: discard all the points
                             break
                         
                             # creating new points when a QhullErrro occurs does not help becasue the error is in the polygon not on the points 
                             #A = np.random.rand(1, nComp) # remove conflicted data and reinitialize                             
-                        #print(f'A after is {A.shape}')
+                        #logger.info(f'A after is {A.shape}')
                         if A.shape[0] < nComp: # ensure that 0 points or conflicted data is not added to dictionary
                             continue
                         else:
-                            #print(f'added to dict with key {cluster[2]}')
+                            #logger.info(f'added to dict with key {cluster[2]}')
                             new_poly = A       
-                            #print (f'{A.shape} made it polygon wide')
+                            #logger.info (f'{A.shape} made it polygon wide')
                 else:
                     # the first cluster that has nothing to compare with
                     new_poly = A                   
@@ -143,7 +146,7 @@ class TSR_DI_functions:
                 nXhat = np.dot(ndf, pca_model.components_[:nComp,:])
                 nXhat += mu
                 
-                #print(sdist.euclidean(nXhat[0,:], centroids[0,:]))
+                #logger.info(sdist.euclidean(nXhat[0,:], centroids[0,:]))
                 
                 # farthest point from each cluster
                 farthest_point = cluster[0].loc[cluster[0]['Cluster']==cluster[2]]['dist_'+str(cluster[2])].max()
@@ -154,34 +157,34 @@ class TSR_DI_functions:
                    dist_from_cent = sdist.euclidean(row, cluster[7][cluster[2],:])
                    if dist_from_cent < farthest_point: # use the < sign if you want points within the boundry
                        accepted_points = np.concatenate((accepted_points, np.reshape(np.array(row), (1, -1)))) # convert to 2D and concate                      
-                       #print(f'index = {index} and new_poly = {new_poly[index,:]}')
+                       #logger.info(f'index = {index} and new_poly = {new_poly[index,:]}')
                        accepted_pca = np.concatenate((accepted_pca, np.reshape(np.array(new_poly[loc,:]), (1, -1))))
                        accepted_points_count=accepted_points_count+1
                 
-                #print(f'We want = {qty}: {accepted_points_count} added --> total is now {accepted_points.shape[0]}')                
+                logger.debug(f'We want = {qty}: Added = {accepted_points_count} --> Current Total = {accepted_points.shape[0]}')                
                 cluster_poly_dict[cluster[2]] = accepted_pca
                 #for key, value in cluster_poly_dict.items():
-                    #print(key)
+                    #logger.info(key)
             
             if break_out_flag == True:
                 continue
             
             # create extra y values to correspond wth the extra x data points created          
             yhat = y_t['label'].values.tolist() + [cluster[3]]*(qty)
-            #print(f'the label is {[cluster[3]]*(qty)}')
+            #logger.info(f'the label is {[cluster[3]]*(qty)}')
                
             # take only the number of points we want (qty) and discard the rest            
             qXhat = accepted_points[0:qty,:]
-            #print(f'{accepted_points.shape}. qty is {qty} qxHat is {qXhat.shape}')
+            #logger.info(f'{accepted_points.shape}. qty is {qty} qxHat is {qXhat.shape}')
             nX_train = np.concatenate((cluster[1], qXhat))
             
             ny_train = yhat 
                   
-            #print(f'Original {ds2.shape}')
-            #print (f'number of Implanted points = {qXhat.shape}')
+            #logger.info(f'Original {ds2.shape}')
+            #logger.info (f'number of Implanted points = {qXhat.shape}')
             
-            #print(f'for x {nX_train.shape}')
-            #print(f'for y {np.array([ny_train]).T.shape}')
+            #logger.info(f'for x {nX_train.shape}')
+            #logger.info(f'for y {np.array([ny_train]).T.shape}')
             
             data.append(np.concatenate((nX_train, np.array([ny_train]).T), axis=1))
             #pd.DataFrame(data).to_csv("datasets/research/BCW_"+ name +"_implanted.csv", index=None)
@@ -197,7 +200,7 @@ class TSR_DI_functions:
             accepted_points = np.array([])
             accepted_points.shape=(0, feature_size) # set A to be 0 rows x feature_size cols matrix           
             accepted_points_count = 0
-            print(f'cluster {current} has {all_cluster_data[current][0].shape} and tested against {c_tuple[0].shape} ')
+            logger.info(f'cluster {current} has {all_cluster_data[current][0].shape} and tested against {c_tuple[0].shape} ')
             
             for sample in all_cluster_data[current][0][:,0:-1]: # gives us all rows and all features without the label for a given cluster
                 # check if any sample falls within another cluster
@@ -210,10 +213,10 @@ class TSR_DI_functions:
             yhat = [str(class_num)] * (len(accepted_points))
             accepted_points = np.column_stack((accepted_points, yhat))
           
-            print(f'cluster {index} now has {accepted_points.shape} records')  
+            logger.info(f'cluster {index} now has {accepted_points.shape} records')  
             if accepted_points.shape[0] < all_cluster_data[current][0].shape[0]:
-                print(f'{all_cluster_data[current][0].shape[0] - accepted_points.shape[0]} conflicts detected !!!')
-            #print ('**********************************')
+                logger.info(f'{all_cluster_data[current][0].shape[0] - accepted_points.shape[0]} conflicts detected !!!')
+            #logger.info ('**********************************')
         
         # replace the bad data with the good data
         all_cluster_data[current][0] = accepted_points
@@ -227,7 +230,7 @@ class TSR_DI_functions:
            accepted_points = np.array([])
            accepted_points.shape=(0, feature_size) # set A to be 0 rows x feature_size cols matrix           
            accepted_points_count = 0
-           print(f'cluster {current} has {all_cluster_data[current][0].shape} and tested against {c_tuple[0].shape} ')
+           logger.info(f'cluster {current} has {all_cluster_data[current][0].shape} and tested against {c_tuple[0].shape} ')
            for sample in all_cluster_data[current][0][:,0:-1]: # gives us all rows and all features without the label for a given cluster                   
                 # check if any sample falls within another polygon
                 poly = c_tuple[0][:,0:-1]
@@ -236,16 +239,16 @@ class TSR_DI_functions:
                 accepted_points = self.in_poly_hull_multi(poly, points)
                 accepted_points = np.concatenate((accepted_points, np.reshape(np.array(sample), (1, -1))))
                 accepted_points_count=accepted_points_count+1
-                print(accepted_points_count)
+                logger.info(accepted_points_count)
                 
            # rebuilding the dataset by adding back the y label values after it was removed
            yhat = [str(class_num)] * (len(accepted_points))
            accepted_points = np.column_stack((accepted_points, yhat))
          
-           #print(f'cluster {index} now has {accepted_points.shape} records')  
+           #logger.info(f'cluster {index} now has {accepted_points.shape} records')  
            if accepted_points.shape[0] < all_cluster_data[current][0].shape[0]:
-               print(f' Anomaly detected !!!')
-           #print ('**********************************')
+               logger.info(f' Anomaly detected !!!')
+           #logger.info ('**********************************')
         
         # replace the bad data with the good data
         all_cluster_data[current][0] = accepted_points
@@ -258,7 +261,7 @@ class TSR_DI_functions:
         Standardized_data = StandardScaler().fit_transform(df_tr)
         df_tr =  TSR_data_functions.np_to_df(Standardized_data)        
         
-        #print(df_tr.shape)
+        #logger.info(df_tr.shape)
         if df_tr.shape[0] < nComp:
             nComp = df_tr.shape[0]
         pca_model = PCA(n_components=nComp).fit(df_tr)
