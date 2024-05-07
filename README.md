@@ -20,6 +20,10 @@ df, _, _ =  process.runDIprocess(dataset, 'Label', di_ratio=100)
 - Class size: 2 - is for binary classification
 - Percentage of synthetic samples to create relative to the majority sample size. 100% means you want minority and majority samples to be equal in size (for binary classification). For nulti-class classification, 100% means that all samples belonging to separate classes will be approximately the same size.
 
+#### Output
+- Your implanted dataset will be saved in datasets/NoTarget/ folder
+- if you opted to separate your testset before dataimplantation, your test set will be store in datasets/ folder
+
 > [!IMPORTANT]
 > The dataset must be saved in .csv format to avoid compactibility issues.
 > The data implanted file will be stored in NoTarget folder. NoTarget means you are not targeting any feature during the DI process
