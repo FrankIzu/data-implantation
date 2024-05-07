@@ -7,7 +7,7 @@ from data_implantation_frontier.DI_Frontier_TSR_multiclass import DataImplantati
 
 dataset = pd.read_csv("datasets/cleaned.csv")
 process = DataImplantation_Frontier() # provide name of your label column; Do you want to separate your testset?
-df, _, _ =  process.runDIprocess(dataset, 'FLAG', di_ratio=50) 
+df, _, _ =  process.runDIprocess(dataset, 'Label', di_ratio=100) 
 
 #### process = DI_Frontier_TSR(col = "NoTarget", nF=-1, createtest=False) 
 -  If you are creating synthetic sample based on another column other than the label column, provide the name of the column. This is used mainly for multi-label classification. Otherwise, just leave the column as 'NoTarget'.
